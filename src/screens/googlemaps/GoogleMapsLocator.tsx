@@ -1,5 +1,6 @@
+import { API_KEY } from '@env';
 import React, { useEffect, useState } from 'react';
-import 'FindPlaces';
+//import FindPlaces from './FindPlaces.tsx';
 import MarkerCallout from './MarkerCallout.tsx';
 import {
   View,
@@ -8,6 +9,8 @@ import {
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import GetLocation from 'react-native-get-location';
+
+console.log('Google Maps API Key:', API_KEY); // Log the API key for debugging
 
 const mapStyle = [
   {

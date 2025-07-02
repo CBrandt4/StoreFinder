@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, ActivityIndicator } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import GetLocation from 'react-native-get-location';
-
-const GOOGLE_MAPS_API_KEY = 'YOUR_GOOGLE_MAPS_API_KEY';
+import { API_KEY } from '@env';
 
 const OldNavyFinder = () => {
   const [location, setLocation] = useState<{
@@ -20,6 +19,7 @@ const OldNavyFinder = () => {
       .then(loc => {
         const coords = { latitude: loc.latitude, longitude: loc.longitude };
         setLocation(coords);
+        console.log('Current location:', coords);
         fetchOldNavyStores(coords);
       })
       .catch(console.warn);
@@ -30,7 +30,7 @@ const OldNavyFinder = () => {
     longitude: number;
   }) => {
     const { latitude, longitude } = coords;
-    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&keyword=Old+Navy&type=clothing_store&key=${GOOGLE_MAPS_API_KEY}`;
+    const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=50000&keyword=Old+Navy,Athleta,Gap,Banana+Republic&type=clothing_store&key=${API_KEY}`;
 
     try {
       const response = await fetch(url);
@@ -42,7 +42,7 @@ const OldNavyFinder = () => {
     }
   };
 
-  if (!location) {
+  if (location?.longitude === undefined || location?.latitude === undefined) {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" color="#0000ff" />
@@ -52,29 +52,32 @@ const OldNavyFinder = () => {
   }
 
   return (
-    <MapView
-      provider={PROVIDER_GOOGLE}
-      style={styles.map}
-      region={{
-        latitude: location.latitude,
-        longitude: location.longitude,
-        latitudeDelta: 0.05,
-        longitudeDelta: 0.05,
-      }}
-      showsUserLocation
-    >
-      {places.map((place, idx) => (
-        <Marker
-          key={idx}
-          coordinate={{
-            latitude: place.geometry.location.lat,
-            longitude: place.geometry.location.lng,
-          }}
-          title={place.name}
-          description={place.vicinity}
-        />
-      ))}
-    </MapView>
+    console.log('Rendering map with location:', location),
+    (
+      <MapView
+        provider={PROVIDER_GOOGLE}
+        style={styles.map}
+        region={{
+          latitude: location.latitude,
+          longitude: location.longitude,
+          latitudeDelta: 0.5,
+          longitudeDelta: 0.5,
+        }}
+        showsUserLocation
+      >
+        {places.map((place, index) => (
+          <Marker
+            key={index}
+            coordinate={{
+              latitude: place.geometry.location.lat,
+              longitude: place.geometry.location.lng,
+            }}
+            title={place.name}
+            description={'Earn 5% back in rewards!'}
+          />
+        ))}
+      </MapView>
+    )
   );
 };
 
