@@ -1,8 +1,11 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, Image } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import GetLocation from 'react-native-get-location';
 import { API_KEY } from '@env';
+import MarkerCallout from './MarkerCallout';
+import styles from './Styles.tsx'; // Assuming styles are defined in a separate file
 
 const OldNavyFinder = () => {
   const [location, setLocation] = useState<{
@@ -72,18 +75,24 @@ const OldNavyFinder = () => {
               latitude: place.geometry.location.lat,
               longitude: place.geometry.location.lng,
             }}
-            title={place.name}
-            description={'Earn 5% back in rewards!'}
-          />
+          >
+            <Image
+              source={require('../../../icons/brPin.png')}
+              style={styles.markerIcon}
+            />
+            <MarkerCallout
+              loc={{
+                title: place.name,
+                offers: 'Earn 5% back in rewards!',
+                lat: place.geometry.location.lat,
+                lng: place.geometry.location.lng,
+              }}
+            />
+          </Marker>
         ))}
       </MapView>
     )
   );
 };
-
-const styles = StyleSheet.create({
-  map: { flex: 1 },
-  center: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-});
 
 export default OldNavyFinder;
