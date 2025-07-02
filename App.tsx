@@ -1,28 +1,11 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React from 'react';
+import GoogleMapsLocator from './src/screens/googlemaps/GoogleMapsLocator';
+//import GoogleMapsLocatorPopup from './src/screens/googlemaps/GoogleMapsLocatorPopup';
+//import GoogleMapsLocator from './src/screens/googlemaps/GoogleMapsScreen';
+//import GoogleMapsScreen from './src/screens/googlemaps/GoogleMapsScreen';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  return (
-    <View style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NewAppScreen templateFileName="App.tsx" />
-    </View>
-  );
+function App(): React.ReactElement {
+  return <GoogleMapsLocator />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
 
 export default App;
