@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     width: 45,
     height: 45,
     resizeMode: 'contain',
+    opacity: 1.0,
   },
   map: {
     flex: 1,
