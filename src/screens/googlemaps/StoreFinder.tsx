@@ -129,109 +129,58 @@ const OldNavyFinder = () => {
   }
 
   return (
-    console.log('Rendering map with location:', location),
-    (
-      <MapView
-        provider={PROVIDER_GOOGLE}
-        style={styles.map}
-        region={{
-          latitude: location.latitude,
-          longitude: location.longitude,
-          latitudeDelta: 0.5,
-          longitudeDelta: 0.5,
-        }}
-        showsUserLocation
-      >
-        {oldNavyPlaces.map((place: any, index: number) => (
-          <Marker
-            key={`oldnavy-${index}`}
-            coordinate={{
-              latitude: place.geometry.location.lat,
-              longitude: place.geometry.location.lng,
-            }}
-          >
-            <Image
-              source={require('../../../icons/oldnavyPin.png')}
-              style={styles.markerIcon}
-            />
-            <MarkerCallout
-              loc={{
-                title: place.name,
-                offers: 'Earn 5% back in rewards!',
-                lat: place.geometry.location.lat,
-                lng: place.geometry.location.lng,
+    <MapView
+      provider={PROVIDER_GOOGLE}
+      style={styles.map}
+      region={{
+        latitude: location.latitude,
+        longitude: location.longitude,
+        latitudeDelta: 0.5,
+        longitudeDelta: 0.5,
+      }}
+      showsUserLocation
+    >
+      {[...oldNavyPlaces, ...gapPlaces, ...athletaPlaces, ...brPlaces].map(
+        (place: any, index: number) => {
+          let icon;
+          let key;
+          if (place.name.includes('Old Navy')) {
+            icon = require('../../../icons/oldnavyPin.png');
+            key = `oldnavy-${index}`;
+          } else if (place.name.includes('Gap')) {
+            icon = require('../../../icons/gapPin.png');
+            key = `gap-${index}`;
+          } else if (place.name.includes('Athleta')) {
+            icon = require('../../../icons/athletaPin.png');
+            key = `athleta-${index}`;
+          } else if (place.name.includes('Banana Republic')) {
+            icon = require('../../../icons/brPin.png');
+            key = `br-${index}`;
+          } else {
+            key = `other-${index}`;
+          }
+          return (
+            <Marker
+              key={key}
+              coordinate={{
+                latitude: place.geometry.location.lat,
+                longitude: place.geometry.location.lng,
               }}
-            />
-          </Marker>
-        ))}
-        {gapPlaces.map((place: any, index: number) => (
-          <Marker
-            key={`gap-${index}`}
-            coordinate={{
-              latitude: place.geometry.location.lat,
-              longitude: place.geometry.location.lng,
-            }}
-          >
-            <Image
-              source={require('../../../icons/gapPin.png')}
-              style={styles.markerIcon}
-            />
-            <MarkerCallout
-              loc={{
-                title: place.name,
-                offers: 'Earn 5% back in rewards!',
-                lat: place.geometry.location.lat,
-                lng: place.geometry.location.lng,
-              }}
-            />
-          </Marker>
-        ))}
-        {brPlaces.map((place: any, index: number) => (
-          <Marker
-            key={`br-${index}`}
-            coordinate={{
-              latitude: place.geometry.location.lat,
-              longitude: place.geometry.location.lng,
-            }}
-          >
-            <Image
-              source={require('../../../icons/brPin.png')}
-              style={styles.markerIcon}
-            />
-            <MarkerCallout
-              loc={{
-                title: place.name,
-                offers: 'Earn 5% back in rewards!',
-                lat: place.geometry.location.lat,
-                lng: place.geometry.location.lng,
-              }}
-            />
-          </Marker>
-        ))}
-        {athletaPlaces.map((place: any, index: number) => (
-          <Marker
-            key={`athleta-${index}`}
-            coordinate={{
-              latitude: place.geometry.location.lat,
-              longitude: place.geometry.location.lng,
-            }}
-          >
-            <Image
-              source={require('../../../icons/athletaPin.png')}
-              style={styles.markerIcon}
-            />
-            <MarkerCallout
-              loc={{
-                title: place.name,
-                offers: 'Earn 5% back in rewards!',
-                lat: place.geometry.location.lat,
-                lng: place.geometry.location.lng,
-              }}
-            />
-          </Marker>
-        ))}
-      </MapView>
-    )
+            >
+              <Image source={icon} style={styles.markerIcon} />
+              <MarkerCallout
+                loc={{
+                  title: place.name,
+                  offers: 'Earn 5% back in rewards!',
+                  lat: place.geometry.location.lat,
+                  lng: place.geometry.location.lng,
+                }}
+              />
+            </Marker>
+          );
+        },
+      )}
+    </MapView>
   );
 };
 
