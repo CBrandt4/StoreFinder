@@ -42,10 +42,10 @@ const styles = StyleSheet.create({
   },
 
   markerIcon: {
-    width: 45,
-    height: 45,
+    width: 75,
+    height: 75,
     resizeMode: 'contain',
-    opacity: 1.0,
+    opacity: 1,
   },
   map: {
     flex: 1,
