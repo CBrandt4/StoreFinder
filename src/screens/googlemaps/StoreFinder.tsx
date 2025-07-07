@@ -4,17 +4,39 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import GetLocation from 'react-native-get-location';
 import { API_KEY } from '@env';
 import MarkerCallout from './MarkerCallout';
-import styles from './Styles.tsx'; // Assuming styles are defined in a separate file
+import styles from './Styles.tsx';
+import { Clusterer } from 'react-native-clusterer';
 
-const OldNavyFinder = () => {
+const MAP_WIDTH = 400; // Set to your map width
+const MAP_HEIGHT = 800; // Set to your map height
+const initialRegion = {
+  latitude: 39.6783,
+  longitude: -75.6508,
+  latitudeDelta: 0.45,
+  longitudeDelta: 0.45,
+};
+const DEFAULT_OPTIONS = {
+  radius: 2, // Try 30 or even lower (default is usually 40)
+};
+const StoreFinder = () => {
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
   } | null>(null);
   const [places, setPlaces] = useState<any[]>([]);
+  const [region, setRegion] = useState(initialRegion);
+
+  const MAP_DIMENSIONS = { width: MAP_WIDTH, height: MAP_HEIGHT };
+
+  // const StoreFinder = () => {
+  //   const [location, setLocation] = useState<{
+  //     latitude: number;
+  //     longitude: number;
+  //   } | null>(null);
+  //   const [places, setPlaces] = useState<any[]>([]);
 
   const OldNavy = true;
-  const Gap = false;
+  const Gap = true;
   const Athleta = true;
   const BananaRepublic = true;
 
@@ -34,21 +56,24 @@ const OldNavyFinder = () => {
 
   console.log('Search string:', searchStr);
 
+  const miles = 15; // Radius in miles
+  const meters = 1609.34 * miles;
+
   const fetchStores = React.useCallback(
     async (coords: { latitude: number; longitude: number }) => {
       const { latitude, longitude } = coords;
-      const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=50000&keyword=${searchStr}&type=clothing_store&key=${API_KEY}`;
+      const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${meters}&keyword=${searchStr}&type=clothing_store&key=${API_KEY}`; //radius = 24140 = 15 miles
 
       try {
         const response = await fetch(url);
         const data = await response.json();
         setPlaces(data.results);
-        console.log('Found Old Navy stores:', data.results);
+        console.log('Found stores:', data.results);
       } catch (error) {
         console.error('Error fetching places:', error);
       }
     },
-    [searchStr],
+    [meters, searchStr],
   );
 
   useEffect(() => {
@@ -74,61 +99,173 @@ const OldNavyFinder = () => {
     );
   }
 
+  const markers = places.map((place, index) => ({
+    type: 'Feature' as const,
+    geometry: {
+      type: 'Point' as const,
+      coordinates: [place.geometry.location.lng, place.geometry.location.lat],
+    },
+    properties: {
+      id: index,
+      name: place.name,
+      place,
+    },
+  }));
+
+  if (location?.longitude === undefined || location?.latitude === undefined) {
+    return (
+      <View style={styles.center}>
+        <ActivityIndicator size="large" color="#0000ff" />
+        <Text>Getting current location…</Text>
+      </View>
+    );
+  }
+
   return (
     <MapView
+      onRegionChangeComplete={setRegion}
       provider={PROVIDER_GOOGLE}
       style={styles.map}
       region={{
         latitude: location.latitude,
         longitude: location.longitude,
-        latitudeDelta: 0.5,
-        longitudeDelta: 0.5,
+        latitudeDelta: 0.45,
+        longitudeDelta: 0.45,
       }}
       showsUserLocation
     >
-      {places.map((place: any, index: number) => {
-        let icon;
-        let key;
-        if (place.name && place.name.includes('Old Navy')) {
-          icon = require('../../../icons/oldnavyPin.png');
-          key = `oldnavy-${index}`;
-        } else if (place.name && place.name.includes('Gap')) {
-          icon = require('../../../icons/gapPin.png');
-          key = `gap-${index}`;
-        } else if (place.name && place.name.includes('Athleta')) {
-          icon = require('../../../icons/athletaPin.png');
-          key = `athleta-${index}`;
-        } else if (place.name && place.name.includes('Banana Republic')) {
-          icon = require('../../../icons/brPin.png');
-          key = `br-${index}`;
-        } else {
-          icon = require('../../../icons/brPin.png');
-          console.warn(`No specific icon for ${place.name}, using default.`);
-          // Default icon for other stores
-          key = `other-${index}`;
-        }
-        return (
-          <Marker
-            key={key}
-            coordinate={{
-              latitude: place.geometry.location.lat,
-              longitude: place.geometry.location.lng,
-            }}
-          >
-            <Image source={icon} style={styles.markerIcon} />
-            <MarkerCallout
-              loc={{
-                title: place.name,
-                offers: 'Earn 5% back in rewards!',
-                lat: place.geometry.location.lat,
-                lng: place.geometry.location.lng,
-              }}
-            />
-          </Marker>
-        );
-      })}
+      <Clusterer
+        data={markers}
+        region={region}
+        options={DEFAULT_OPTIONS}
+        mapDimensions={MAP_DIMENSIONS}
+        renderItem={item => {
+          if ('cluster_id' in item.properties) {
+            // Render a cluster marker
+            return (
+              //memoize cluster markers if flickering!!
+              <Marker
+                key={`cluster-${item.properties.cluster_id}`}
+                coordinate={{
+                  latitude: item.geometry.coordinates[1],
+                  longitude: item.geometry.coordinates[0],
+                }}
+              >
+                <View style={styles.ClusterMarker}>
+                  <Text>{item.properties.point_count}</Text>
+                </View>
+              </Marker>
+            );
+          } else {
+            // Render a single store marker
+            const place = item.properties.place;
+            let icon;
+            let key;
+            if (place.name && place.name.includes('Old Navy')) {
+              icon = require('../../../icons/oldnavyPin.png');
+              key = `oldnavy-${item.properties.id}`;
+            } else if (place.name && place.name.includes('Gap')) {
+              icon = require('../../../icons/gapPin.png');
+              key = `gap-${item.properties.id}`;
+            } else if (place.name && place.name.includes('Athleta')) {
+              icon = require('../../../icons/athletaPin.png');
+              key = `athleta-${item.properties.id}`;
+            } else if (place.name && place.name.includes('Banana Republic')) {
+              icon = require('../../../icons/brPin.png');
+              key = `br-${item.properties.id}`;
+            } else {
+              icon = require('../../../icons/defaultMarker.png');
+              key = `other-${item.properties.id}`;
+              console.warn(
+                `No specific icon for ${place.name}, using default.`,
+              );
+            }
+
+            return (
+              <Marker
+                //key={`marker-${item.properties.id}`}
+                key={key}
+                coordinate={{
+                  latitude: place.geometry.location.lat,
+                  longitude: place.geometry.location.lng,
+                }}
+              >
+                <Image source={icon} style={styles.markerIcon} />
+                <MarkerCallout
+                  loc={{
+                    title: place.name,
+                    offers: 'Earn 5% back in rewards!',
+                    lat: place.geometry.location.lat,
+                    lng: place.geometry.location.lng,
+                  }}
+                />
+              </Marker>
+            );
+          }
+        }}
+      />
     </MapView>
   );
 };
 
-export default OldNavyFinder;
+export default StoreFinder;
+
+//   return (
+//     <MapView
+//       onRegionChangeComplete={setRegion}
+//       provider={PROVIDER_GOOGLE}
+//       style={styles.map}
+//       region={{
+//         latitude: location.latitude,
+//         longitude: location.longitude,
+//         latitudeDelta: 0.45,
+//         longitudeDelta: 0.45,
+//       }}
+//       showsUserLocation
+//     >
+//       {places.map((place: any, index: number) => {
+//         let icon;
+//         let key;
+//         if (place.name && place.name.includes('Old Navy')) {
+//           icon = require('../../../icons/oldnavyPin.png');
+//           key = `oldnavy-${index}`;
+//         } else if (place.name && place.name.includes('Gap')) {
+//           icon = require('../../../icons/gapPin.png');
+//           key = `gap-${index}`;
+//         } else if (place.name && place.name.includes('Athleta')) {
+//           icon = require('../../../icons/athletaPin.png');
+//           key = `athleta-${index}`;
+//         } else if (place.name && place.name.includes('Banana Republic')) {
+//           icon = require('../../../icons/brPin.png');
+//           key = `br-${index}`;
+//         } else {
+//           icon = require('../../../icons/defaultMarker.png');
+//           console.warn(`No specific icon for ${place.name}, using default.`);
+//           // Default icon for other stores
+//           key = `other-${index}`;
+//         }
+//         return (
+//           <Marker
+//             key={key}
+//             coordinate={{
+//               latitude: place.geometry.location.lat,
+//               longitude: place.geometry.location.lng,
+//             }}
+//           >
+//             <Image source={icon} style={styles.markerIcon} />
+//             <MarkerCallout
+//               loc={{
+//                 title: place.name,
+//                 offers: 'Earn 5% back in rewards!',
+//                 lat: place.geometry.location.lat,
+//                 lng: place.geometry.location.lng,
+//               }}
+//             />
+//           </Marker>
+//         );
+//       })}
+//     </MapView>
+//   );
+// };
+
+// export default StoreFinder;

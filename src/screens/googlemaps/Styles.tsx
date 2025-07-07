@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
   },
 
   markerIcon: {
-    width: 75,
-    height: 75,
+    width: 65,
+    height: 65,
     resizeMode: 'contain',
     opacity: 1,
   },
@@ -54,6 +54,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  ClusterMarker: {
+    backgroundColor: '#007AFF',
+    borderRadius: 20,
+    padding: 10,
+    borderWidth: 2,
+    borderColor: '#fff',
   },
 });
 
