@@ -42,8 +42,8 @@ const styles = StyleSheet.create({
   },
 
   markerIcon: {
-    width: 65,
-    height: 65,
+    width: 50,
+    height: 50,
     resizeMode: 'contain',
     opacity: 1,
   },

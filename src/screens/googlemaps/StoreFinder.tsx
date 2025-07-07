@@ -7,16 +7,16 @@ import MarkerCallout from './MarkerCallout';
 import styles from './Styles.tsx';
 import { Clusterer } from 'react-native-clusterer';
 
-const MAP_WIDTH = 400; // Set to your map width
-const MAP_HEIGHT = 800; // Set to your map height
+const MAP_WIDTH = 400;
+const MAP_HEIGHT = 800;
 const initialRegion = {
   latitude: 39.6783,
   longitude: -75.6508,
-  latitudeDelta: 0.45,
-  longitudeDelta: 0.45,
+  latitudeDelta: 0.3,
+  longitudeDelta: 0.3,
 };
 const DEFAULT_OPTIONS = {
-  radius: 2, // Try 30 or even lower (default is usually 40)
+  radius: 4,
 };
 const StoreFinder = () => {
   const [location, setLocation] = useState<{
@@ -27,13 +27,6 @@ const StoreFinder = () => {
   const [region, setRegion] = useState(initialRegion);
 
   const MAP_DIMENSIONS = { width: MAP_WIDTH, height: MAP_HEIGHT };
-
-  // const StoreFinder = () => {
-  //   const [location, setLocation] = useState<{
-  //     latitude: number;
-  //     longitude: number;
-  //   } | null>(null);
-  //   const [places, setPlaces] = useState<any[]>([]);
 
   const OldNavy = true;
   const Gap = true;
@@ -183,7 +176,6 @@ const StoreFinder = () => {
 
             return (
               <Marker
-                //key={`marker-${item.properties.id}`}
                 key={key}
                 coordinate={{
                   latitude: place.geometry.location.lat,
@@ -209,63 +201,3 @@ const StoreFinder = () => {
 };
 
 export default StoreFinder;
-
-//   return (
-//     <MapView
-//       onRegionChangeComplete={setRegion}
-//       provider={PROVIDER_GOOGLE}
-//       style={styles.map}
-//       region={{
-//         latitude: location.latitude,
-//         longitude: location.longitude,
-//         latitudeDelta: 0.45,
-//         longitudeDelta: 0.45,
-//       }}
-//       showsUserLocation
-//     >
-//       {places.map((place: any, index: number) => {
-//         let icon;
-//         let key;
-//         if (place.name && place.name.includes('Old Navy')) {
-//           icon = require('../../../icons/oldnavyPin.png');
-//           key = `oldnavy-${index}`;
-//         } else if (place.name && place.name.includes('Gap')) {
-//           icon = require('../../../icons/gapPin.png');
-//           key = `gap-${index}`;
-//         } else if (place.name && place.name.includes('Athleta')) {
-//           icon = require('../../../icons/athletaPin.png');
-//           key = `athleta-${index}`;
-//         } else if (place.name && place.name.includes('Banana Republic')) {
-//           icon = require('../../../icons/brPin.png');
-//           key = `br-${index}`;
-//         } else {
-//           icon = require('../../../icons/defaultMarker.png');
-//           console.warn(`No specific icon for ${place.name}, using default.`);
-//           // Default icon for other stores
-//           key = `other-${index}`;
-//         }
-//         return (
-//           <Marker
-//             key={key}
-//             coordinate={{
-//               latitude: place.geometry.location.lat,
-//               longitude: place.geometry.location.lng,
-//             }}
-//           >
-//             <Image source={icon} style={styles.markerIcon} />
-//             <MarkerCallout
-//               loc={{
-//                 title: place.name,
-//                 offers: 'Earn 5% back in rewards!',
-//                 lat: place.geometry.location.lat,
-//                 lng: place.geometry.location.lng,
-//               }}
-//             />
-//           </Marker>
-//         );
-//       })}
-//     </MapView>
-//   );
-// };
-
-// export default StoreFinder;
