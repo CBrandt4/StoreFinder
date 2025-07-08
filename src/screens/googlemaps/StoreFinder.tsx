@@ -1,18 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import {
   View,
   Text,
   ActivityIndicator,
   Image,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import GetLocation from 'react-native-get-location';
 import { API_KEY } from '@env';
 import MarkerCallout from './MarkerCallout';
-import styles from './Styles.tsx';
+import styles from './Styles';
 import { Clusterer } from 'react-native-clusterer';
-import { Dimensions } from 'react-native';
+
+type Place = {
+  name: string;
+  place_id?: string;
+  vicinity?: string;
+  geometry: {
+    location: {
+      lat: number;
+      lng: number;
+    };
+  };
+};
+
+type StoreFinderProps = {
+  places: Place[];
+  setPlaces: (places: Place[]) => void;
+};
 
 const initialRegion = {
   latitude: 39.6783,
@@ -20,20 +37,20 @@ const initialRegion = {
   latitudeDelta: 0.3,
   longitudeDelta: 0.3,
 };
+
 const DEFAULT_OPTIONS = {
   radius: 4,
 };
-const StoreFinder = () => {
+
+const StoreFinder: React.FC<StoreFinderProps> = ({ places, setPlaces }) => {
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
   } | null>(null);
-  const [places, setPlaces] = useState<any[]>([]);
   const [region, setRegion] = useState(initialRegion);
 
   const { width: MAP_WIDTH, height: MAP_HEIGHT } = Dimensions.get('window');
   const MAP_DIMENSIONS = { width: MAP_WIDTH, height: MAP_HEIGHT / 2 };
-  //console.log('MAP_DIMENSIONS:', MAP_DIMENSIONS);
 
   const OldNavy = true;
   const Gap = true;
@@ -41,36 +58,28 @@ const StoreFinder = () => {
   const BananaRepublic = true;
 
   let searchStr = '';
-  if (OldNavy) {
-    searchStr += 'Old Navy';
-  }
-  if (Gap) {
-    searchStr += (searchStr ? ',' : '') + 'Gap';
-  }
-  if (Athleta) {
-    searchStr += (searchStr ? ',' : '') + 'Athleta';
-  }
-  if (BananaRepublic) {
-    searchStr += (searchStr ? ',' : '') + 'Banana Republic';
-  }
+  if (OldNavy) searchStr += 'Old Navy';
+  if (Gap) searchStr += (searchStr ? ',' : '') + 'Gap';
+  if (Athleta) searchStr += (searchStr ? ',' : '') + 'Athleta';
+  if (BananaRepublic) searchStr += (searchStr ? ',' : '') + 'Banana Republic';
 
-  const miles = 15; // Radius in miles
+  const miles = 15;
   const meters = 1609.34 * miles;
 
-  const fetchStores = React.useCallback(
+  const fetchStores = useCallback(
     async (coords: { latitude: number; longitude: number }) => {
       const { latitude, longitude } = coords;
-      const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${meters}&keyword=${searchStr}&type=clothing_store&key=${API_KEY}`; //radius = 24140 = 15 miles
-      console.log('API KEY USED!');
+      const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${meters}&keyword=${searchStr}&type=clothing_store&key=${API_KEY}`;
+
       try {
         const response = await fetch(url);
         const data = await response.json();
-        setPlaces(data.results);
+        setPlaces(data.results || []);
       } catch (error) {
         console.error('Error fetching places:', error);
       }
     },
-    [meters, searchStr],
+    [meters, searchStr, setPlaces],
   );
 
   useEffect(() => {
@@ -81,13 +90,11 @@ const StoreFinder = () => {
       .then(loc => {
         const coords = { latitude: loc.latitude, longitude: loc.longitude };
         setLocation(coords);
-        //console.log('Fetching stores with coords:', coords);
-        // fetchStores(coords);
       })
       .catch(console.warn);
-  }, [fetchStores]);
+  }, []);
 
-  if (location?.longitude === undefined || location?.latitude === undefined) {
+  if (!location?.latitude || !location?.longitude) {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" color="#0000ff" />
@@ -96,7 +103,7 @@ const StoreFinder = () => {
     );
   }
 
-  const markers = places.map((place, index) => ({
+  const markers = (places ?? []).map((place, index) => ({
     type: 'Feature' as const,
     geometry: {
       type: 'Point' as const,
@@ -108,15 +115,6 @@ const StoreFinder = () => {
       place,
     },
   }));
-
-  if (location?.longitude === undefined || location?.latitude === undefined) {
-    return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color="#0000ff" />
-        <Text>Getting current location…</Text>
-      </View>
-    );
-  }
 
   return (
     <View style={styles.mapContainer}>
@@ -139,9 +137,7 @@ const StoreFinder = () => {
           mapDimensions={MAP_DIMENSIONS}
           renderItem={item => {
             if ('cluster_id' in item.properties) {
-              // Render a cluster marker
               return (
-                //memoize cluster markers if flickering!!
                 <Marker
                   key={`cluster-${item.properties.cluster_id}`}
                   coordinate={{
@@ -161,34 +157,27 @@ const StoreFinder = () => {
                 </Marker>
               );
             } else {
-              // Render a single store marker
               const place = item.properties.place;
               let icon;
               let key;
-              if (place.name && place.name.includes('Old Navy')) {
+
+              if (place.name.includes('Old Navy')) {
                 icon = require('../../../icons/oldnavyPin.png');
                 key = `oldnavy-${item.properties.id}`;
-              } else if (place.name && place.name.includes('Gap')) {
+              } else if (place.name.includes('Gap')) {
                 icon = require('../../../icons/gapPin.png');
                 key = `gap-${item.properties.id}`;
-              } else if (place.name && place.name.includes('Athleta')) {
+              } else if (place.name.includes('Athleta')) {
                 icon = require('../../../icons/athletaPin.png');
                 key = `athleta-${item.properties.id}`;
-              } else if (place.name && place.name.includes('Banana Republic')) {
+              } else if (place.name.includes('Banana Republic')) {
                 icon = require('../../../icons/brPin.png');
                 key = `br-${item.properties.id}`;
               } else {
                 icon = require('../../../icons/defaultMarker.png');
                 key = `other-${item.properties.id}`;
-                console.warn(
-                  `No specific icon for ${place.name}, using default.`,
-                );
               }
-              console.log(
-                'Marker coords:',
-                place.geometry.location.lat,
-                place.geometry.location.lng,
-              );
+
               return (
                 <Marker
                   key={key}
@@ -212,15 +201,13 @@ const StoreFinder = () => {
           }}
         />
       </MapView>
+
       <View style={styles.buttonOverlay}>
         <TouchableOpacity
           style={styles.searchButton}
           onPress={() => {
             fetchStores(region);
-            console.log(
-              'Button pressed, fetching stores with this location:',
-              region,
-            );
+            console.log('Button pressed, fetching stores with region:', region);
           }}
         >
           <Text style={styles.searchButtonText}>Search this area</Text>
