@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, ActivityIndicator, Image, Button } from 'react-native';
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import GetLocation from 'react-native-get-location';
 import { API_KEY } from '@env';
@@ -27,7 +33,7 @@ const StoreFinder = () => {
 
   const { width: MAP_WIDTH, height: MAP_HEIGHT } = Dimensions.get('window');
   const MAP_DIMENSIONS = { width: MAP_WIDTH, height: MAP_HEIGHT / 2 };
-  console.log('MAP_DIMENSIONS:', MAP_DIMENSIONS);
+  //console.log('MAP_DIMENSIONS:', MAP_DIMENSIONS);
 
   const OldNavy = true;
   const Gap = true;
@@ -144,7 +150,13 @@ const StoreFinder = () => {
                   }}
                 >
                   <View style={styles.ClusterMarker}>
-                    <Text>{item.properties.point_count}</Text>
+                    <Image
+                      source={require('../../../icons/clusterMarker.png')}
+                      style={styles.markerIcon}
+                    />
+                    <Text style={styles.ClusterMarkerText}>
+                      +{item.properties.point_count}
+                    </Text>
                   </View>
                 </Marker>
               );
@@ -201,18 +213,18 @@ const StoreFinder = () => {
         />
       </MapView>
       <View style={styles.buttonOverlay}>
-        <Button
-          title="Search this area"
+        <TouchableOpacity
+          style={styles.searchButton}
           onPress={() => {
-            //console.log(region);
             fetchStores(region);
             console.log(
               'Button pressed, fetching stores with this location:',
               region,
             );
-            //fetchStores(region);
           }}
-        />
+        >
+          <Text style={styles.searchButtonText}>Search this area</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

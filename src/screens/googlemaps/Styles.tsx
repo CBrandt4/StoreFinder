@@ -26,6 +26,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 
+  searchButton: {
+    position: 'absolute',
+    top: 10,
+    alignSelf: 'center',
+    backgroundColor: '#007AFF', // or your desired background
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+    borderRadius: 15,
+    zIndex: 100,
+  },
+  searchButtonText: {
+    color: '#fff',
+    fontSize: 14,
+  },
+
   offers: {
     marginBottom: 8,
     fontSize: 14,
@@ -41,9 +56,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   buttonOverlay: {
-    width: 175,
-    height: 70,
-    //color: 'RED',
+    fontSize: 12,
+    width: 150,
+    height: 40,
     paddingVertical: 6,
     paddingHorizontal: 10,
     position: 'absolute',
@@ -54,6 +69,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
+    fontSize: 16,
     color: 'white',
     textAlign: 'center',
     fontWeight: '600',
@@ -74,12 +90,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   ClusterMarker: {
-    textDecorationColor: 'white',
-    backgroundColor: '#007AFF',
-    borderRadius: 20,
-    padding: 10,
-    borderWidth: 2,
-    borderColor: '#fff',
+    width: 50, // or size of your icon
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'relative',
+  },
+  ClusterMarkerText: {
+    position: 'absolute',
+    fontWeight: 'bold',
+    fontSize: 12,
+    top: 10,
+    color: '#fff',
+    textAlign: 'center',
   },
 });
 
