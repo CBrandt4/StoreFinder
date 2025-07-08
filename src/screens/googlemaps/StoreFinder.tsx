@@ -6,9 +6,8 @@ import { API_KEY } from '@env';
 import MarkerCallout from './MarkerCallout';
 import styles from './Styles.tsx';
 import { Clusterer } from 'react-native-clusterer';
+import { Dimensions } from 'react-native';
 
-const MAP_WIDTH = 400;
-const MAP_HEIGHT = 800;
 const initialRegion = {
   latitude: 39.6783,
   longitude: -75.6508,
@@ -26,7 +25,9 @@ const StoreFinder = () => {
   const [places, setPlaces] = useState<any[]>([]);
   const [region, setRegion] = useState(initialRegion);
 
-  const MAP_DIMENSIONS = { width: MAP_WIDTH, height: MAP_HEIGHT };
+  const { width: MAP_WIDTH, height: MAP_HEIGHT } = Dimensions.get('window');
+  const MAP_DIMENSIONS = { width: MAP_WIDTH, height: MAP_HEIGHT / 2 };
+  console.log('MAP_DIMENSIONS:', MAP_DIMENSIONS);
 
   const OldNavy = true;
   const Gap = true;
@@ -47,8 +48,6 @@ const StoreFinder = () => {
     searchStr += (searchStr ? ',' : '') + 'Banana Republic';
   }
 
-  console.log('Search string:', searchStr);
-
   const miles = 15; // Radius in miles
   const meters = 1609.34 * miles;
 
@@ -56,12 +55,11 @@ const StoreFinder = () => {
     async (coords: { latitude: number; longitude: number }) => {
       const { latitude, longitude } = coords;
       const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${meters}&keyword=${searchStr}&type=clothing_store&key=${API_KEY}`; //radius = 24140 = 15 miles
-
+      console.log('API KEY USED!');
       try {
         const response = await fetch(url);
         const data = await response.json();
         setPlaces(data.results);
-        console.log('Found stores:', data.results);
       } catch (error) {
         console.error('Error fetching places:', error);
       }
@@ -77,7 +75,6 @@ const StoreFinder = () => {
       .then(loc => {
         const coords = { latitude: loc.latitude, longitude: loc.longitude };
         setLocation(coords);
-        console.log('Current location:', coords);
         //console.log('Fetching stores with coords:', coords);
         // fetchStores(coords);
       })
@@ -117,16 +114,6 @@ const StoreFinder = () => {
 
   return (
     <View style={styles.mapContainer}>
-      <Button
-        title="Search this area"
-        onPress={() => {
-          console.log(
-            'Button pressed, fetching stores with this location:',
-            location,
-          );
-          fetchStores(location);
-        }}
-      />
       <MapView
         onRegionChangeComplete={setRegion}
         provider={PROVIDER_GOOGLE}
@@ -185,7 +172,11 @@ const StoreFinder = () => {
                   `No specific icon for ${place.name}, using default.`,
                 );
               }
-
+              console.log(
+                'Marker coords:',
+                place.geometry.location.lat,
+                place.geometry.location.lng,
+              );
               return (
                 <Marker
                   key={key}
@@ -209,6 +200,20 @@ const StoreFinder = () => {
           }}
         />
       </MapView>
+      <View style={styles.buttonOverlay}>
+        <Button
+          title="Search this area"
+          onPress={() => {
+            //console.log(region);
+            fetchStores(region);
+            console.log(
+              'Button pressed, fetching stores with this location:',
+              region,
+            );
+            //fetchStores(region);
+          }}
+        />
+      </View>
     </View>
   );
 };
