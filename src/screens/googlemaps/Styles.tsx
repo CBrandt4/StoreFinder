@@ -7,25 +7,6 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 5, // Android shadow
     shadowColor: '#000', // iOS shadow
-
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-
-    shadowOpacity: 0.3,
-    shadowRadius: 4,
-  },
-  Button: {
-    marginTop: 8,
-    backgroundColor: '#007AFF',
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-    elevation: 2, // Android shadow
-    shadowColor: '#000', // iOS shadow
     shadowOffset: {
       width: 0,
       height: 2,
@@ -33,6 +14,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
   },
+
   mapContainer: {
     flex: 1,
     backgroundColor: 'transparent',
@@ -51,9 +33,24 @@ const styles = StyleSheet.create({
 
   button: {
     backgroundColor: '#007AFF',
+    width: 150,
+    height: 40,
+    alignSelf: 'center',
     paddingVertical: 6,
     paddingHorizontal: 10,
     borderRadius: 8,
+  },
+  buttonOverlay: {
+    width: 175,
+    height: 70,
+    //color: 'RED',
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    position: 'absolute',
+    borderRadius: 8,
+    top: 5,
+    opacity: 0.9,
+    alignSelf: 'center',
   },
 
   buttonText: {
@@ -77,6 +74,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   ClusterMarker: {
+    textDecorationColor: 'white',
     backgroundColor: '#007AFF',
     borderRadius: 20,
     padding: 10,

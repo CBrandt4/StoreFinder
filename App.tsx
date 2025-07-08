@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   storeFinderContainer: {
-    height: height / 3,
+    height: height / 2,
     width: '95%',
     alignSelf: 'center',
     borderRadius: 8,
