@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
     marginTop: 100,
-    backgroundColor: '#fff',
+    backgroundColor: 'blue',
     elevation: 4,
   },
 });

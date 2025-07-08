@@ -16,6 +16,27 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
   },
+  Button: {
+    marginTop: 8,
+    backgroundColor: '#007AFF',
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 2, // Android shadow
+    shadowColor: '#000', // iOS shadow
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+  },
+  mapContainer: {
+    flex: 1,
+    backgroundColor: 'transparent',
+  },
 
   title: {
     fontWeight: 'bold',
