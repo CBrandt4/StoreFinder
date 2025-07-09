@@ -41,6 +41,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 
+  safeArea: {
+    color: '#fff6f6f6',
+  },
+
   offers: {
     marginBottom: 8,
     fontSize: 14,
@@ -85,6 +89,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   center: {
+    backgroundColor: 'transparent',
+    color: 'white',
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

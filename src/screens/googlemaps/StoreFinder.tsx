@@ -11,8 +11,9 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import GetLocation from 'react-native-get-location';
 import { API_KEY } from '@env';
 import MarkerCallout from './MarkerCallout';
-import styles from './Styles';
+import styles from './FinderStyles';
 import { Clusterer } from 'react-native-clusterer';
+import { assignIcon } from '../../utils/assignIcon';
 
 type Place = {
   name: string;
@@ -52,6 +53,8 @@ const StoreFinder: React.FC<StoreFinderProps> = ({ places, setPlaces }) => {
   const { width: MAP_WIDTH, height: MAP_HEIGHT } = Dimensions.get('window');
   const MAP_DIMENSIONS = { width: MAP_WIDTH, height: MAP_HEIGHT / 2 };
 
+  //HARDCODED if implementing a search/toggles/filters UI, these could be state variables
+  //For now, they are hardcoded to true to include all brands in the search
   const OldNavy = true;
   const Gap = true;
   const Athleta = true;
@@ -63,8 +66,8 @@ const StoreFinder: React.FC<StoreFinderProps> = ({ places, setPlaces }) => {
   if (Athleta) searchStr += (searchStr ? ',' : '') + 'Athleta';
   if (BananaRepublic) searchStr += (searchStr ? ',' : '') + 'Banana Republic';
 
-  const miles = 15;
-  const meters = 1609.34 * miles;
+  const searchRadiusMiles = 15; // HARDCODED - Can be made dynamic based on user input using a slider or input field -> state variable
+  const meters = 1609.34 * searchRadiusMiles; // Hardcoded conversion from miles to meters, could be function within user input component
 
   const fetchStores = useCallback(
     async (coords: { latitude: number; longitude: number }) => {
@@ -125,8 +128,8 @@ const StoreFinder: React.FC<StoreFinderProps> = ({ places, setPlaces }) => {
         region={{
           latitude: location.latitude,
           longitude: location.longitude,
-          latitudeDelta: 0.45,
-          longitudeDelta: 0.45,
+          latitudeDelta: 0.3, //Hardcoded - Can be made dynamic based on user zoom
+          longitudeDelta: 0.3, // ^^
         }}
         showsUserLocation
       >
@@ -158,25 +161,26 @@ const StoreFinder: React.FC<StoreFinderProps> = ({ places, setPlaces }) => {
               );
             } else {
               const place = item.properties.place;
-              let icon;
-              let key;
 
-              if (place.name.includes('Old Navy')) {
-                icon = require('../../../icons/oldnavyPin.png');
-                key = `oldnavy-${item.properties.id}`;
-              } else if (place.name.includes('Gap')) {
-                icon = require('../../../icons/gapPin.png');
-                key = `gap-${item.properties.id}`;
-              } else if (place.name.includes('Athleta')) {
-                icon = require('../../../icons/athletaPin.png');
-                key = `athleta-${item.properties.id}`;
-              } else if (place.name.includes('Banana Republic')) {
-                icon = require('../../../icons/brPin.png');
-                key = `br-${item.properties.id}`;
-              } else {
-                icon = require('../../../icons/defaultMarker.png');
-                key = `other-${item.properties.id}`;
-              }
+              // HARDCODED - Write a helper function that determines the icon based on the place name
+              // if (place.name.includes('Old Navy')) {
+              //   icon = require('../../../icons/oldnavyPin.png');
+              //   key = `oldnavy-${item.properties.id}`;
+              // } else if (place.name.includes('Gap')) {
+              //   icon = require('../../../icons/gapPin.png');
+              //   key = `gap-${item.properties.id}`;
+              // } else if (place.name.includes('Athleta')) {
+              //   icon = require('../../../icons/athletaPin.png');
+              //   key = `athleta-${item.properties.id}`;
+              // } else if (place.name.includes('Banana Republic')) {
+              //   icon = require('../../../icons/brPin.png');
+              //   key = `br-${item.properties.id}`;
+              // } else {
+              //   icon = require('../../../icons/defaultMarker.png');
+              //   key = `other-${item.properties.id}`;
+              // }
+
+              const { icon, key } = assignIcon(item);
 
               return (
                 <Marker

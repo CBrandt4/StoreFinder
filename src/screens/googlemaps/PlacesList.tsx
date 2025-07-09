@@ -1,10 +1,12 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import styles from './ListStyles';
+
+import { View, Text, FlatList, TouchableOpacity, Linking } from 'react-native';
 
 type Place = {
   name: string;
   place_id?: string;
-  vicinity?: string;
+  vicinity?: string; //address
   geometry: {
     location: {
       lat: number;
@@ -37,6 +39,18 @@ const PlacesList: React.FC<PlacesListProps> = ({ places }) => {
           <Text style={styles.address}>
             {item.vicinity ?? 'No address available'}
           </Text>
+          <View>
+            <TouchableOpacity
+              style={styles.TouchableOpacity}
+              onPress={() => {
+                const url = `https://www.google.com/maps/dir/?api=1&destination=${item.geometry.location.lat},${item.geometry.location.lng}`;
+                console.log('Opening URL:', url);
+                Linking.openURL(url);
+              }}
+            >
+              <Text style={styles.TouchableOpacityText}>Get Directions</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
     />
@@ -44,32 +58,3 @@ const PlacesList: React.FC<PlacesListProps> = ({ places }) => {
 };
 
 export default PlacesList;
-
-const styles = StyleSheet.create({
-  emptyContainer: {
-    padding: 20,
-    alignItems: 'center',
-  },
-  emptyText: {
-    fontSize: 16,
-    color: '#666',
-  },
-  listContainer: {
-    padding: 10,
-  },
-  item: {
-    marginBottom: 12,
-    padding: 12,
-    backgroundColor: '#f5f5f5',
-    borderRadius: 10,
-    elevation: 2,
-  },
-  name: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  address: {
-    fontSize: 14,
-    color: '#444',
-  },
-});
