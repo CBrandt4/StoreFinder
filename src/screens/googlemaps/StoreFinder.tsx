@@ -72,8 +72,10 @@ const StoreFinder: React.FC<StoreFinderProps> = ({ places, setPlaces }) => {
   const fetchStores = useCallback(
     async (coords: { latitude: number; longitude: number }) => {
       const { latitude, longitude } = coords;
+      // this url can be put into a net work file - context api
+      //
       const url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=${meters}&keyword=${searchStr}&type=clothing_store&key=${API_KEY}`;
-
+      // could make this call once a month
       try {
         const response = await fetch(url);
         const data = await response.json();
@@ -85,16 +87,34 @@ const StoreFinder: React.FC<StoreFinderProps> = ({ places, setPlaces }) => {
     [meters, searchStr, setPlaces],
   );
 
+  // useEffect(() => {
+  //   GetLocation.getCurrentPosition({
+  //     enableHighAccuracy: true,
+  //     timeout: 60000,
+  //   })
+  //     // use async await instead of then catch
+  //     .then(loc => {
+  //       const coords = { latitude: loc.latitude, longitude: loc.longitude };
+  //       setLocation(coords);
+  //     })
+  //     .catch(console.warn);
+  // }, []);
+
   useEffect(() => {
-    GetLocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 60000,
-    })
-      .then(loc => {
+    const fetchLocation = async () => {
+      try {
+        const loc = await GetLocation.getCurrentPosition({
+          enableHighAccuracy: true,
+          timeout: 60000,
+        });
         const coords = { latitude: loc.latitude, longitude: loc.longitude };
         setLocation(coords);
-      })
-      .catch(console.warn);
+      } catch (error) {
+        console.warn(error);
+      }
+    };
+
+    fetchLocation();
   }, []);
 
   if (!location?.latitude || !location?.longitude) {
@@ -161,25 +181,6 @@ const StoreFinder: React.FC<StoreFinderProps> = ({ places, setPlaces }) => {
               );
             } else {
               const place = item.properties.place;
-
-              // HARDCODED - Write a helper function that determines the icon based on the place name
-              // if (place.name.includes('Old Navy')) {
-              //   icon = require('../../../icons/oldnavyPin.png');
-              //   key = `oldnavy-${item.properties.id}`;
-              // } else if (place.name.includes('Gap')) {
-              //   icon = require('../../../icons/gapPin.png');
-              //   key = `gap-${item.properties.id}`;
-              // } else if (place.name.includes('Athleta')) {
-              //   icon = require('../../../icons/athletaPin.png');
-              //   key = `athleta-${item.properties.id}`;
-              // } else if (place.name.includes('Banana Republic')) {
-              //   icon = require('../../../icons/brPin.png');
-              //   key = `br-${item.properties.id}`;
-              // } else {
-              //   icon = require('../../../icons/defaultMarker.png');
-              //   key = `other-${item.properties.id}`;
-              // }
-
               const { icon, key } = assignIcon(item);
 
               return (
