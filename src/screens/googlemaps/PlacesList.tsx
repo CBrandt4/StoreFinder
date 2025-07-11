@@ -1,8 +1,8 @@
-import React from 'react';
 import styles from './ListStyles';
 import { getDistance, convertDistance } from 'geolib';
 import { View, Text, FlatList, TouchableOpacity, Linking } from 'react-native';
-
+//import React from 'react';
+import { useLocation } from '../../utils/LocationContext'; // Adjust path as needed
 type Place = {
   name: string;
   place_id?: string;
@@ -20,10 +20,20 @@ type PlacesListProps = {
 };
 
 const PlacesList: React.FC<PlacesListProps> = ({ places }) => {
+  const location = useLocation();
+
   if (!places || places.length === 0) {
     return (
       <View style={styles.emptyContainer}>
         <Text style={styles.emptyText}>No stores found.</Text>
+      </View>
+    );
+  }
+
+  if (!location) {
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>Getting your location...</Text>
       </View>
     );
   }
@@ -45,8 +55,8 @@ const PlacesList: React.FC<PlacesListProps> = ({ places }) => {
                       longitude: item.geometry.location.lng,
                     },
                     {
-                      latitude: 39.6783, // Replace with user's current lat
-                      longitude: -75.6508, // Replace with user's current lng
+                      latitude: location.latitude,
+                      longitude: location.longitude,
                     },
                   ),
                   'mi',

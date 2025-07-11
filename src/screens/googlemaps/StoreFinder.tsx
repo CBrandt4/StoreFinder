@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 //import { } from 'geolib';
+import { useLocation } from '../../utils/LocationContext'; // Adjust path as needed
 import {
   View,
   Text,
@@ -9,7 +10,6 @@ import {
   Dimensions,
 } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import GetLocation from 'react-native-get-location';
 import { API_KEY } from '@env';
 import MarkerCallout from './MarkerCallout';
 import styles from './FinderStyles';
@@ -45,10 +45,6 @@ const DEFAULT_OPTIONS = {
 };
 
 const StoreFinder: React.FC<StoreFinderProps> = ({ places, setPlaces }) => {
-  const [location, setLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
   const [region, setRegion] = useState(initialRegion);
 
   const { width: MAP_WIDTH, height: MAP_HEIGHT } = Dimensions.get('window');
@@ -88,22 +84,7 @@ const StoreFinder: React.FC<StoreFinderProps> = ({ places, setPlaces }) => {
     [meters, searchStr, setPlaces],
   );
 
-  useEffect(() => {
-    const fetchLocation = async () => {
-      try {
-        const loc = await GetLocation.getCurrentPosition({
-          enableHighAccuracy: true,
-          timeout: 60000,
-        });
-        const coords = { latitude: loc.latitude, longitude: loc.longitude };
-        setLocation(coords);
-      } catch (error) {
-        console.warn(error);
-      }
-    };
-
-    fetchLocation();
-  }, []);
+  const location = useLocation();
 
   if (!location?.latitude || !location?.longitude) {
     return (
