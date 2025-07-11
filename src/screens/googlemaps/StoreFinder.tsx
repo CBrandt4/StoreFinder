@@ -1,5 +1,4 @@
-import React, { useState, useCallback } from 'react';
-//import { } from 'geolib';
+import React, { useState, useCallback, useRef } from 'react';
 import { useLocation } from '../../utils/LocationContext'; // Adjust path as needed
 import {
   View,
@@ -15,6 +14,7 @@ import MarkerCallout from './MarkerCallout';
 import styles from './FinderStyles';
 import { Clusterer } from 'react-native-clusterer';
 import { assignIcon } from '../../utils/assignIcon';
+import SearchBar from './SearchBar';
 
 type Place = {
   name: string;
@@ -65,7 +65,7 @@ const StoreFinder: React.FC<StoreFinderProps> = ({ places, setPlaces }) => {
 
   const searchRadiusMiles = 15; // HARDCODED - Can be made dynamic based on user input using a slider or input field -> state variable
   const meters = 1609.34 * searchRadiusMiles; // Hardcoded conversion from miles to meters, could be function within user input component
-
+  const mapRef = useRef<MapView | null>(null);
   const fetchStores = useCallback(
     async (coords: { latitude: number; longitude: number }) => {
       const { latitude, longitude } = coords;
@@ -109,83 +109,106 @@ const StoreFinder: React.FC<StoreFinderProps> = ({ places, setPlaces }) => {
   }));
 
   return (
-    <View style={styles.mapContainer}>
-      <MapView
-        onRegionChangeComplete={setRegion}
-        provider={PROVIDER_GOOGLE}
-        style={styles.map}
-        region={{
-          latitude: location.latitude,
-          longitude: location.longitude,
-          latitudeDelta: 0.3, //Hardcoded - Can be made dynamic based on user zoom
-          longitudeDelta: 0.3, // ^^
+    // eslint-disable-next-line react-native/no-inline-styles
+    <View style={{ flex: 1 }}>
+      <SearchBar
+        onLocationFound={({ latitude, longitude }) => {
+          const newRegion = {
+            latitude,
+            longitude,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
+          };
+
+          if (mapRef.current) {
+            mapRef.current.animateToRegion(newRegion, 1000); // (1000ms = 1 second)
+          }
+          setRegion(newRegion);
         }}
-        showsUserLocation
-      >
-        <Clusterer
-          data={markers}
-          region={region}
-          options={DEFAULT_OPTIONS}
-          mapDimensions={MAP_DIMENSIONS}
-          renderItem={item => {
-            if ('cluster_id' in item.properties) {
-              return (
-                <Marker
-                  key={`cluster-${item.properties.cluster_id}`}
-                  coordinate={{
-                    latitude: item.geometry.coordinates[1],
-                    longitude: item.geometry.coordinates[0],
-                  }}
-                >
-                  <View style={styles.ClusterMarker}>
-                    <Image
-                      source={require('../../../icons/clusterMarker.png')}
-                      style={styles.markerIcon}
-                    />
-                    <Text style={styles.ClusterMarkerText}>
-                      +{item.properties.point_count}
-                    </Text>
-                  </View>
-                </Marker>
-              );
-            } else {
-              const place = item.properties.place;
-              const { icon, key } = assignIcon(item);
+      />
 
-              return (
-                <Marker
-                  key={key}
-                  coordinate={{
-                    latitude: place.geometry.location.lat,
-                    longitude: place.geometry.location.lng,
-                  }}
-                >
-                  <Image source={icon} style={styles.markerIcon} />
-                  <MarkerCallout
-                    loc={{
-                      title: place.name,
-                      offers: 'Earn 5% back in rewards!',
-                      lat: place.geometry.location.lat,
-                      lng: place.geometry.location.lng,
-                    }}
-                  />
-                </Marker>
-              );
-            }
+      <View style={styles.mapContainer}>
+        <MapView
+          ref={mapRef}
+          onRegionChangeComplete={setRegion}
+          provider={PROVIDER_GOOGLE}
+          style={styles.map}
+          region={{
+            latitude: location.latitude,
+            longitude: location.longitude,
+            latitudeDelta: 0.3, //Hardcoded - Can be made dynamic based on user zoom
+            longitudeDelta: 0.3, // ^^
           }}
-        />
-      </MapView>
-
-      <View style={styles.buttonOverlay}>
-        <TouchableOpacity
-          style={styles.searchButton}
-          onPress={() => {
-            fetchStores(region);
-            console.log('Button pressed, fetching stores with region:', region);
-          }}
+          showsUserLocation
         >
-          <Text style={styles.searchButtonText}>Search this area</Text>
-        </TouchableOpacity>
+          <Clusterer
+            data={markers}
+            region={region}
+            options={DEFAULT_OPTIONS}
+            mapDimensions={MAP_DIMENSIONS}
+            renderItem={item => {
+              if ('cluster_id' in item.properties) {
+                return (
+                  <Marker
+                    key={`cluster-${item.properties.cluster_id}`}
+                    coordinate={{
+                      latitude: item.geometry.coordinates[1],
+                      longitude: item.geometry.coordinates[0],
+                    }}
+                  >
+                    <View style={styles.ClusterMarker}>
+                      <Image
+                        source={require('../../../icons/clusterMarker.png')}
+                        style={styles.markerIcon}
+                      />
+                      <Text style={styles.ClusterMarkerText}>
+                        +{item.properties.point_count}
+                      </Text>
+                    </View>
+                  </Marker>
+                );
+              } else {
+                const place = item.properties.place;
+                const { icon, key } = assignIcon(item);
+
+                return (
+                  <Marker
+                    key={key}
+                    coordinate={{
+                      latitude: place.geometry.location.lat,
+                      longitude: place.geometry.location.lng,
+                    }}
+                  >
+                    <Image source={icon} style={styles.markerIcon} />
+                    <MarkerCallout
+                      loc={{
+                        title: place.name,
+                        offers: 'Earn 5% back in rewards!',
+                        lat: place.geometry.location.lat,
+                        lng: place.geometry.location.lng,
+                      }}
+                    />
+                  </Marker>
+                );
+              }
+            }}
+          />
+        </MapView>
+
+        <View style={styles.buttonOverlay}>
+          <TouchableOpacity
+            style={styles.searchButton}
+            onPress={() => {
+              fetchStores(region);
+              console.log(
+                'Button pressed, fetching stores with region:',
+                region,
+              );
+            }}
+          >
+            <Text style={styles.searchButtonText}>Search this area</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
