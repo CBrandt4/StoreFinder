@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+//import { } from 'geolib';
 import {
   View,
   Text,
@@ -86,19 +87,6 @@ const StoreFinder: React.FC<StoreFinderProps> = ({ places, setPlaces }) => {
     },
     [meters, searchStr, setPlaces],
   );
-
-  // useEffect(() => {
-  //   GetLocation.getCurrentPosition({
-  //     enableHighAccuracy: true,
-  //     timeout: 60000,
-  //   })
-  //     // use async await instead of then catch
-  //     .then(loc => {
-  //       const coords = { latitude: loc.latitude, longitude: loc.longitude };
-  //       setLocation(coords);
-  //     })
-  //     .catch(console.warn);
-  // }, []);
 
   useEffect(() => {
     const fetchLocation = async () => {
