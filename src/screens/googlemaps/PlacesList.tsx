@@ -2,24 +2,11 @@ import styles from './ListStyles';
 import { getDistance, convertDistance } from 'geolib';
 import { View, Text, FlatList, TouchableOpacity, Linking } from 'react-native';
 //import React from 'react';
-import { useLocation } from '../../utils/LocationContext'; // Adjust path as needed
-type Place = {
-  name: string;
-  place_id?: string;
-  vicinity?: string; //address
-  geometry: {
-    location: {
-      lat: number;
-      lng: number;
-    };
-  };
-};
+import { useLocation } from '../../context/LocationContext'; // Adjust path as needed
+import { useStore } from '../../context/StoreContext';
 
-type PlacesListProps = {
-  places: Place[];
-};
-
-const PlacesList: React.FC<PlacesListProps> = ({ places }) => {
+const PlacesList = () => {
+  const { places } = useStore();
   const location = useLocation();
 
   if (!places || places.length === 0) {
