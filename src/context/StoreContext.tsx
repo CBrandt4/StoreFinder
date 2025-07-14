@@ -7,25 +7,8 @@ import React, {
 } from 'react';
 import { API_KEY } from '@env';
 import { useLocation } from './LocationContext';
-
-export type Region = {
-  latitude: number;
-  longitude: number;
-  latitudeDelta: number;
-  longitudeDelta: number;
-};
-
-export type Place = {
-  name: string;
-  place_id?: string;
-  vicinity?: string;
-  geometry: {
-    location: {
-      lat: number;
-      lng: number;
-    };
-  };
-};
+import { Place } from '../types/Place';
+import { Region } from '../types/Region';
 
 type FetchStoresParams = {
   region?: Region;
