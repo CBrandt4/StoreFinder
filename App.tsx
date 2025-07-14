@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     width: '100%',
-    backgroundColor: '#fff',
+    backgroundColor: '#f1f1f1',
   },
   storeFinderContainer: {
     height: height / 2,
@@ -35,8 +35,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: 'hidden',
     marginTop: 100,
-    backgroundColor: 'blue',
-    elevation: 4,
+    backgroundColor: 'transparent',
   },
 });
 
