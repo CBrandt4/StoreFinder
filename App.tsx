@@ -2,23 +2,20 @@ import React from 'react';
 import StoreFinder from './src/screens/googlemaps/StoreFinder';
 import PlacesList from './src/screens/googlemaps/PlacesList';
 import { View, StyleSheet, Dimensions, SafeAreaView } from 'react-native';
-import { useState } from 'react';
 import { LocationProvider } from './src/context/LocationContext';
 import { StoreProvider } from './src/context/StoreContext';
 
 const { height } = Dimensions.get('window');
 
 function App(): React.ReactElement {
-  const [places, setPlaces] = useState<any[]>([]); // Use 'Place[]' if you have a type
-
   return (
     <LocationProvider>
-      <StoreProvider fetchStores={fetchStores} region={region}>
+      <StoreProvider>
         <SafeAreaView style={styles.safeArea}>
           <View style={styles.storeFinderContainer}>
-            <StoreFinder places={places} setPlaces={setPlaces} />
+            <StoreFinder />
           </View>
-          <PlacesList places={places} />
+          <PlacesList />
         </SafeAreaView>
       </StoreProvider>
     </LocationProvider>
