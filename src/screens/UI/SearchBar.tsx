@@ -52,8 +52,8 @@ const SearchBar: React.FC<Props> = ({ onLocationFound }) => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
-    paddingTop: 40,
-    paddingBottom: 8,
+    paddingTop: 10,
+    paddingBottom: 10,
     backgroundColor: 'white',
     zIndex: 1,
   },

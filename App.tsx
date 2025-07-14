@@ -3,7 +3,8 @@ import StoreFinder from './src/screens/googlemaps/StoreFinder';
 import PlacesList from './src/screens/googlemaps/PlacesList';
 import { View, StyleSheet, Dimensions, SafeAreaView } from 'react-native';
 import { useState } from 'react';
-import { LocationProvider } from './src/utils/LocationContext';
+import { LocationProvider } from './src/context/LocationContext';
+import { StoreProvider } from './src/context/StoreContext';
 
 const { height } = Dimensions.get('window');
 
@@ -12,12 +13,14 @@ function App(): React.ReactElement {
 
   return (
     <LocationProvider>
-      <SafeAreaView style={styles.safeArea}>
-        <View style={styles.storeFinderContainer}>
-          <StoreFinder places={places} setPlaces={setPlaces} />
-        </View>
-        <PlacesList places={places} />
-      </SafeAreaView>
+      <StoreProvider fetchStores={fetchStores} region={region}>
+        <SafeAreaView style={styles.safeArea}>
+          <View style={styles.storeFinderContainer}>
+            <StoreFinder places={places} setPlaces={setPlaces} />
+          </View>
+          <PlacesList places={places} />
+        </SafeAreaView>
+      </StoreProvider>
     </LocationProvider>
   );
 }
