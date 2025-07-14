@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
-import styles from './FinderStyles';
+import styles from '../googlemaps/FinderStyles';
 import { useStore } from '../../context/StoreContext';
 
 const SearchThisAreaButton: React.FC = () => {
