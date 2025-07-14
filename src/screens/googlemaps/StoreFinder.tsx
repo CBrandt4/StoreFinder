@@ -3,13 +3,13 @@ import { useLocation } from '../../context/LocationContext'; // Adjust path as n
 import { View, Text, Image, Dimensions } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useStore } from '../../context/StoreContext';
-import MarkerCallout from './MarkerCallout';
+import MarkerCallout from '../UI/MarkerCallout.tsx';
 import styles from './FinderStyles';
 import { Clusterer } from 'react-native-clusterer';
 import { assignIcon } from '../../utils/assignIcon';
 import SearchBar from '../UI/SearchBar';
 import LoadingOverlay from '../UI/LoadingOverlay.tsx';
-import SearchThisAreaButton from './SearchThisAreaButton.tsx';
+import SearchThisAreaButton from '../UI/SearchThisAreaButton.tsx';
 
 // type Place = {
 //   name: string;

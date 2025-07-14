@@ -1,4 +1,4 @@
-import { API_KEY } from '@env'; // Use react-native-dotenv or similar
+import { API_KEY } from '@env';
 
 type FetchStoresParams = {
   latitude: number;
