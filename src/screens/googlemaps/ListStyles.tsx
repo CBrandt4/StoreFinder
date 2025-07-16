@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
-    color: 'white',
+    color: 'black',
   },
   listContainer: {
     padding: 10,
@@ -22,11 +22,20 @@ const styles = StyleSheet.create({
   },
 
   item: {
-    marginBottom: 12,
+    marginBottom: 1.5,
+    marginTop: 1.5,
     padding: 12,
     backgroundColor: 'white',
-    borderRadius: 10,
-    elevation: 2,
+    borderRadius: 0,
+  },
+  header: {
+    marginBottom: 0,
+    marginTop: 15,
+    padding: 10,
+    marginHorizontal: 10,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
   },
   name: {
     fontWeight: 'bold',
