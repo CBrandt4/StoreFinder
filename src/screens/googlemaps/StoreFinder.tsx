@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { useLocation } from '../../context/LocationContext'; // Adjust path as needed
+import { useLocation } from '../../context/LocationContext';
 import { View, Text, Image, Dimensions } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useStore } from '../../context/StoreContext';
@@ -10,18 +10,6 @@ import { assignIcon } from '../../utils/assignIcon';
 import SearchBar from '../UI/SearchBar';
 import LoadingOverlay from '../UI/LoadingOverlay.tsx';
 import SearchThisAreaButton from '../UI/SearchThisAreaButton.tsx';
-
-// type Place = {
-//   name: string;
-//   place_id?: string;
-//   vicinity?: string;
-//   geometry: {
-//     location: {
-//       lat: number;
-//       lng: number;
-//     };
-//   };
-// };
 
 const DEFAULT_OPTIONS = {
   radius: 4,
@@ -76,6 +64,7 @@ const StoreFinder: React.FC = () => {
       <View style={styles.mapContainer}>
         <MapView
           ref={mapRef}
+          showsUserLocation
           onRegionChangeComplete={setRegion}
           provider={PROVIDER_GOOGLE}
           style={styles.map}
@@ -85,7 +74,6 @@ const StoreFinder: React.FC = () => {
             latitudeDelta: 0.3, //Hardcoded - Can be made dynamic based on user zoom
             longitudeDelta: 0.3, // ^^
           }}
-          showsUserLocation
         >
           {region && (
             <Clusterer
