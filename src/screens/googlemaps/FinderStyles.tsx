@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     alignSelf: 'center',
-    backgroundColor: '#007AFF', // or your desired background
+    backgroundColor: '#006DE3', //or your desired background
     paddingVertical: 5,
     paddingHorizontal: 10,
     borderRadius: 15,
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#006DE3',
     width: 150,
     height: 40,
     alignSelf: 'center',

@@ -4,6 +4,7 @@ import PlacesList from './src/screens/googlemaps/PlacesList';
 import { View, StyleSheet, Dimensions, SafeAreaView } from 'react-native';
 import { LocationProvider } from './src/context/LocationContext';
 import { StoreProvider } from './src/context/StoreContext';
+import Spacer from './src/screens/UI/Spacer.tsx';
 
 const { height } = Dimensions.get('window');
 
@@ -15,6 +16,7 @@ function App(): React.ReactElement {
           <View style={styles.storeFinderContainer}>
             <StoreFinder />
           </View>
+          <Spacer />
           <PlacesList />
         </SafeAreaView>
       </StoreProvider>

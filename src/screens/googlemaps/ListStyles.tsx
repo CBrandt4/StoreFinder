@@ -11,6 +11,9 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     padding: 10,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    overflow: 'hidden',
   },
   TouchableOpacity: {
     backgroundColor: 'transparent',
@@ -20,19 +23,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'right',
   },
-
   item: {
     marginBottom: 1.5,
     marginTop: 1.5,
     padding: 12,
     backgroundColor: 'white',
     borderRadius: 0,
+    flex: 1,
+    flexDirection: 'row',
   },
   header: {
     marginBottom: 0,
     marginTop: 15,
     padding: 10,
-    marginHorizontal: 10,
     backgroundColor: 'white',
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
@@ -41,9 +44,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
+  headerText: {
+    fontWeight: 'bold',
+    fontSize: 18,
+  },
   address: {
     fontSize: 14,
     color: 'black',
+  },
+  left: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  right: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  externalLink: {
+    width: 25,
+    height: 25,
   },
 });
 

@@ -1,12 +1,26 @@
+/* eslint-disable react/no-unstable-nested-components */
 import styles from './ListStyles';
 import { getDistance, convertDistance } from 'geolib';
-import { View, Text, FlatList, TouchableOpacity, Linking } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import { useLocation } from '../../context/LocationContext';
 import { useStore } from '../../context/StoreContext';
 
 const PlacesList = () => {
   const { places } = useStore();
   const location = useLocation();
+
+  const ListHeader = () => (
+    <View style={styles.header}>
+      <Text style={styles.headerText}>Stores Nearby</Text>
+    </View>
+  );
 
   if (!places || places.length === 0) {
     return (
@@ -25,38 +39,22 @@ const PlacesList = () => {
   }
 
   return (
-    <View>
-      <View style={styles.header}>
-        <Text>Stores Nearby</Text>
-      </View>
+    <View style={styles.listContainer}>
       <FlatList
         data={places}
         keyExtractor={item => item.place_id ?? item.name}
-        contentContainerStyle={styles.listContainer}
+        ListHeaderComponent={ListHeader}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <Text style={styles.name}>{item.name}</Text>
-            <Text>
-              {item.geometry && item.geometry.location
-                ? `${convertDistance(
-                    getDistance(
-                      {
-                        latitude: item.geometry.location.lat,
-                        longitude: item.geometry.location.lng,
-                      },
-                      {
-                        latitude: location.latitude,
-                        longitude: location.longitude,
-                      },
-                    ),
-                    'mi',
-                  ).toFixed(1)} miles`
-                : 'Distance not available'}
-            </Text>
-            <Text style={styles.address}>
-              {item.vicinity ?? 'No address available'}
-            </Text>
-            <View>
+            {/* //left */}
+            <View style={styles.left}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.address}>
+                {item.vicinity ?? 'No address available'}
+              </Text>
+            </View>
+            {/* //Right */}
+            <View style={styles.right}>
               <TouchableOpacity
                 style={styles.TouchableOpacity}
                 onPress={() => {
@@ -65,8 +63,29 @@ const PlacesList = () => {
                   Linking.openURL(url);
                 }}
               >
-                <Text style={styles.TouchableOpacityText}>Get Directions</Text>
+                <Image
+                  source={require('../../../icons/external-link.png')}
+                  style={styles.externalLink}
+                />
+                {/* <Text style={styles.TouchableOpacityText}>Get Directions</Text> */}
               </TouchableOpacity>
+              <Text>
+                {item.geometry && item.geometry.location
+                  ? `${convertDistance(
+                      getDistance(
+                        {
+                          latitude: item.geometry.location.lat,
+                          longitude: item.geometry.location.lng,
+                        },
+                        {
+                          latitude: location.latitude,
+                          longitude: location.longitude,
+                        },
+                      ),
+                      'mi',
+                    ).toFixed(1)} mi`
+                  : 'Distance not available'}
+              </Text>
             </View>
           </View>
         )}
