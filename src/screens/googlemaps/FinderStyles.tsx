@@ -20,12 +20,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
 
-  title: {
-    fontWeight: 'bold',
-    marginBottom: 4,
-    fontSize: 16,
-  },
-
   searchButton: {
     position: 'absolute',
     top: 10,
@@ -109,6 +103,77 @@ const styles = StyleSheet.create({
     top: 10,
     color: '#fff',
     textAlign: 'center',
+  },
+  emptyContainer: {
+    padding: 20,
+    alignItems: 'center',
+  },
+
+  listContainer: {
+    padding: 10,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    overflow: 'hidden',
+    marginBottom: 50,
+  },
+  TouchableOpacity: {
+    backgroundColor: 'transparent',
+  },
+  TouchableOpacityText: {
+    color: 'blue',
+    fontSize: 16,
+    textAlign: 'right',
+  },
+  item: {
+    marginBottom: 1.5,
+    marginTop: 1.5,
+    padding: 12,
+    backgroundColor: 'white',
+    borderRadius: 0,
+    flex: 1,
+    flexDirection: 'row',
+  },
+  header: {
+    marginBottom: 0,
+    marginTop: 15,
+    padding: 10,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+  },
+  name: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    lineHeight: 24,
+    color: '#272727',
+  },
+  headerText: {
+    fontWeight: 'bold',
+    lineHeight: 24,
+    fontSize: 18,
+  },
+  normalText: {
+    fontSize: 16,
+    lineHeight: 22,
+    color: '#515151',
+  },
+  left: {
+    flex: 4,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  right: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  externalLink: {
+    width: 24,
+    height: 24,
+  },
+
+  navBar: {
+    backgroundColor: '#fff',
   },
 });
 

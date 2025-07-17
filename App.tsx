@@ -5,6 +5,7 @@ import { View, StyleSheet, Dimensions, SafeAreaView } from 'react-native';
 import { LocationProvider } from './src/context/LocationContext';
 import { StoreProvider } from './src/context/StoreContext';
 import Spacer from './src/screens/UI/Spacer.tsx';
+import AppHeader from './src/screens/UI/AppHeader.tsx';
 
 const { height } = Dimensions.get('window');
 
@@ -13,11 +14,14 @@ function App(): React.ReactElement {
     <LocationProvider>
       <StoreProvider>
         <SafeAreaView style={styles.safeArea}>
-          <View style={styles.storeFinderContainer}>
-            <StoreFinder />
+          <AppHeader />
+          <View>
+            <View style={styles.storeFinderContainer}>
+              <StoreFinder />
+            </View>
+            <Spacer />
+            <PlacesList />
           </View>
-          <Spacer />
-          <PlacesList />
         </SafeAreaView>
       </StoreProvider>
     </LocationProvider>
