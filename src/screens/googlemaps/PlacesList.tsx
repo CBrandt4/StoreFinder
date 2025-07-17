@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import styles from './ListStyles';
+import styles from './FinderStyles';
 import { getDistance, convertDistance } from 'geolib';
 import {
   View,
@@ -25,7 +25,7 @@ const PlacesList = () => {
   if (!places || places.length === 0) {
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>No stores found.</Text>
+        <Text style={styles.normalText}>No stores found.</Text>
       </View>
     );
   }
@@ -33,7 +33,7 @@ const PlacesList = () => {
   if (!location) {
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>Getting your location...</Text>
+        <Text style={styles.normalText}>Getting your location...</Text>
       </View>
     );
   }
@@ -49,7 +49,7 @@ const PlacesList = () => {
             {/* //left */}
             <View style={styles.left}>
               <Text style={styles.name}>{item.name}</Text>
-              <Text style={styles.address}>
+              <Text style={styles.normalText}>
                 {item.vicinity ?? 'No address available'}
               </Text>
             </View>

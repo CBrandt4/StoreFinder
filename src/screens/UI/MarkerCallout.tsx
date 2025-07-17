@@ -9,7 +9,6 @@ interface MarkerCalloutProps {
     offers: string;
     lat: number;
     lng: number;
-    // address1: string;
   };
 }
 
@@ -23,7 +22,7 @@ const MarkerCallout: React.FC<MarkerCalloutProps> = ({ loc }) => (
     }}
   >
     <View style={styles.calloutContainer}>
-      <Text style={styles.title}>{loc.title}</Text>
+      <Text style={styles.headerText}>{loc.title}</Text>
       <Text style={styles.offers}>{loc.offers}</Text>
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>Get Directions</Text>
