@@ -1,6 +1,6 @@
 import React from 'react';
-import StoreFinder from './src/components/organisms/StoreFinder.tsx';
-import PlacesList from './src/components/organisms/PlacesList.tsx';
+import StoreFinder from './src/components/organisms/StoreMap.tsx';
+import PlacesList from './src/components/organisms/StoreList.tsx';
 import { View, StyleSheet, Dimensions, SafeAreaView } from 'react-native';
 import { LocationProvider } from './src/context/LocationContext';
 import { StoreProvider } from './src/context/StoreContext';
