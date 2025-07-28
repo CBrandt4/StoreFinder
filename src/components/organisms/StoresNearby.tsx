@@ -1,5 +1,4 @@
-/* eslint-disable react/no-unstable-nested-components */
-import styles from './FinderStyles';
+import styles from '../AppStyles';
 import { getDistance, convertDistance } from 'geolib';
 import {
   View,
@@ -15,12 +14,6 @@ import { useStore } from '../../context/StoreContext';
 const PlacesList = () => {
   const { places } = useStore();
   const location = useLocation();
-
-  const ListHeader = () => (
-    <View style={styles.header}>
-      <Text style={styles.headerText}>Stores Nearby</Text>
-    </View>
-  );
 
   if (!places || places.length === 0) {
     return (
@@ -38,12 +31,26 @@ const PlacesList = () => {
     );
   }
 
+  const orderedPlaces = [...places].sort((a, b) => {
+    //sort places by proximity to location
+    const distanceA = getDistance(location, {
+      latitude: a.geometry.location.lat,
+      longitude: a.geometry.location.lng,
+    });
+
+    const distanceB = getDistance(location, {
+      latitude: b.geometry.location.lat,
+      longitude: b.geometry.location.lng,
+    });
+
+    return distanceA - distanceB;
+  });
+
   return (
     <View style={styles.listContainer}>
       <FlatList
-        data={places}
+        data={orderedPlaces.slice(0, 5)} //5 places max
         keyExtractor={item => item.place_id ?? item.name}
-        ListHeaderComponent={ListHeader}
         renderItem={({ item }) => (
           <View style={styles.item}>
             {/* //left */}
@@ -67,7 +74,6 @@ const PlacesList = () => {
                   source={require('../../../icons/external-link.png')}
                   style={styles.externalLink}
                 />
-                {/* <Text style={styles.TouchableOpacityText}>Get Directions</Text> */}
               </TouchableOpacity>
               <Text>
                 {item.geometry && item.geometry.location

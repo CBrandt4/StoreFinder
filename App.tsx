@@ -1,11 +1,11 @@
 import React from 'react';
-import StoreFinder from './src/screens/googlemaps/StoreFinder';
-import PlacesList from './src/screens/googlemaps/PlacesList';
+import StoreFinder from './src/components/organisms/StoreFinder.tsx';
+import PlacesList from './src/components/organisms/PlacesList.tsx';
 import { View, StyleSheet, Dimensions, SafeAreaView } from 'react-native';
 import { LocationProvider } from './src/context/LocationContext';
 import { StoreProvider } from './src/context/StoreContext';
-import Spacer from './src/screens/UI/Spacer.tsx';
-import AppHeader from './src/screens/UI/AppHeader.tsx';
+import Spacer from './src/components/molecules/Spacer.tsx';
+import AppHeader from './src/components/molecules/AppHeader.tsx';
 
 const { height } = Dimensions.get('window');
 

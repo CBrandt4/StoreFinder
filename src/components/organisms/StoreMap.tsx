@@ -1,15 +1,15 @@
 import React, { useRef } from 'react';
-import { useLocation } from '../../context/LocationContext';
+import { useLocation } from '../../context/LocationContext.tsx';
 import { View, Text, Image, Dimensions } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { useStore } from '../../context/StoreContext';
-import MarkerCallout from '../UI/MarkerCallout.tsx';
-import styles from './FinderStyles';
+import { useStore } from '../../context/StoreContext.tsx';
+import MarkerCallout from '../molecules/MarkerCallout.tsx';
+import styles from '../AppStyles.tsx';
 import { Clusterer } from 'react-native-clusterer';
-import { assignIcon } from '../../utils/assignIcon';
-import SearchBar from '../UI/SearchBar';
-import LoadingOverlay from '../UI/LoadingOverlay.tsx';
-import SearchThisAreaButton from '../UI/SearchThisAreaButton.tsx';
+import { assignIcon } from '../../utils/assignIcon.ts';
+import SearchBar from '../molecules/SearchBar.tsx';
+import LoadingOverlay from '../molecules/LoadingOverlay.tsx';
+import SearchThisAreaButton from '../molecules/SearchThisAreaButton.tsx';
 
 const DEFAULT_OPTIONS = {
   radius: 4,
@@ -19,9 +19,7 @@ const StoreFinder: React.FC = () => {
   const { width: MAP_WIDTH, height: MAP_HEIGHT } = Dimensions.get('window');
   const MAP_DIMENSIONS = { width: MAP_WIDTH, height: MAP_HEIGHT / 2 };
   const mapRef = useRef<MapView | null>(null);
-
   const { places, fetchStores, region, setRegion } = useStore();
-  //fetchStores, loading, error
   const location = useLocation();
 
   if (!location?.latitude || !location?.longitude) {
@@ -57,7 +55,7 @@ const StoreFinder: React.FC = () => {
             mapRef.current.animateToRegion(newRegion, 1000); // (1000ms = 1 second)
           }
           setRegion(newRegion);
-          fetchStores({ region: newRegion }); // Can uncomment, but this saves API calls when testing search feature
+          fetchStores({ region: newRegion }); // Can comment to save API calls when testing search feature
         }}
       />
 
