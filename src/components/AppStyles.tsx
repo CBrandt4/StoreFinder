@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
   },
 
   safeArea: {
-    color: '#fff6f6f6',
+    backgroundColor: '#fff6f6f6',
+    flex: 1,
   },
 
   offers: {
@@ -46,8 +47,8 @@ const styles = StyleSheet.create({
 
   button: {
     backgroundColor: '#006DE3',
-    width: 150,
-    height: 40,
+    width: 140,
+    height: 35,
     alignSelf: 'center',
     paddingVertical: 6,
     paddingHorizontal: 10,
@@ -108,14 +109,6 @@ const styles = StyleSheet.create({
     padding: 20,
     alignItems: 'center',
   },
-
-  listContainer: {
-    padding: 10,
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-    overflow: 'hidden',
-    marginBottom: 50,
-  },
   TouchableOpacity: {
     backgroundColor: 'transparent',
   },
@@ -125,21 +118,30 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   item: {
-    marginBottom: 1.5,
-    marginTop: 1.5,
+    marginBottom: 1,
+    marginTop: 1,
     padding: 12,
     backgroundColor: 'white',
     borderRadius: 0,
-    flex: 1,
     flexDirection: 'row',
   },
   header: {
-    marginBottom: 0,
-    marginTop: 15,
+    marginBottom: 0.5,
     padding: 10,
     backgroundColor: 'white',
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
+  },
+  listContainer: {
+    flex: 1,
+    marginHorizontal: 10,
+    borderRadius: 8,
+    backgroundColor: 'transparent', // 👈 just for testing
+    overflow: 'hidden',
+  },
+  flatList: {
+    flex: 1,
+    backgroundColor: 'transparent',
   },
   name: {
     fontWeight: 'bold',
@@ -171,7 +173,6 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
   },
-
   navBar: {
     backgroundColor: '#fff',
   },

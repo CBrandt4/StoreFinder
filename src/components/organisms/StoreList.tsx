@@ -3,10 +3,10 @@ import { getDistance, convertDistance } from 'geolib';
 import {
   View,
   Text,
-  Image,
   FlatList,
   TouchableOpacity,
   Linking,
+  Image,
 } from 'react-native';
 import { useLocation } from '../../context/LocationContext';
 import { useStore } from '../../context/StoreContext';
@@ -53,6 +53,7 @@ const PlacesList = () => {
         data={orderedPlaces.slice(0, 10)} //10 places max
         keyExtractor={item => item.place_id ?? item.name}
         ListHeaderComponent={ListHeader}
+        style={styles.flatList}
         renderItem={({ item }) => (
           <View style={styles.item}>
             {/* //left */}
@@ -71,12 +72,11 @@ const PlacesList = () => {
                   console.log('Opening URL:', url);
                   Linking.openURL(url);
                 }}
-              >
-                <Image
-                  source={require('../../../icons/external-link.png')}
-                  style={styles.externalLink}
-                />
-              </TouchableOpacity>
+              />
+              <Image
+                source={require('../../../icons/external-link.png')}
+                style={styles.externalLink}
+              />
               <Text>
                 {item.geometry && item.geometry.location
                   ? `${convertDistance(

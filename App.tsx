@@ -15,13 +15,13 @@ function App(): React.ReactElement {
       <StoreProvider>
         <SafeAreaView style={styles.safeArea}>
           <AppHeader />
-          <View>
-            <View style={styles.storeFinderContainer}>
-              <StoreFinder />
-            </View>
-            <Spacer />
-            <PlacesList />
+          <View style={styles.storeFinderContainer}>
+            <StoreFinder />
           </View>
+          <Spacer />
+          <PlacesList />
+          <Spacer />
+          <Spacer />
         </SafeAreaView>
       </StoreProvider>
     </LocationProvider>
