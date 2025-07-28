@@ -50,6 +50,7 @@ const PlacesList = () => {
   return (
     <View style={styles.listContainer}>
       <FlatList
+        overScrollMode="never"
         data={orderedPlaces.slice(0, 10)} //10 places max
         keyExtractor={item => item.place_id ?? item.name}
         ListHeaderComponent={ListHeader}
@@ -72,11 +73,13 @@ const PlacesList = () => {
                   console.log('Opening URL:', url);
                   Linking.openURL(url);
                 }}
-              />
-              <Image
-                source={require('../../../icons/external-link.png')}
-                style={styles.externalLink}
-              />
+              >
+                <Image
+                  source={require('../../../icons/external-link.png')}
+                  style={styles.externalLink}
+                />
+              </TouchableOpacity>
+
               <Text>
                 {item.geometry && item.geometry.location
                   ? `${convertDistance(

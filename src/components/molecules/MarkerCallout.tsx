@@ -9,6 +9,7 @@ interface MarkerCalloutProps {
     offers: string;
     lat: number;
     lng: number;
+    vicinity: string;
   };
 }
 
@@ -16,7 +17,9 @@ const MarkerCallout: React.FC<MarkerCalloutProps> = ({ loc }) => (
   <Callout
     tooltip
     onPress={() => {
-      const url = `https://www.google.com/maps/dir/?api=1&destination=${loc.lat},${loc.lng}`;
+      const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+        `${loc.title},${loc.vicinity}`,
+      )}`;
       console.log('Opening URL:', url);
       Linking.openURL(url);
     }}

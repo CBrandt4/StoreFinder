@@ -54,6 +54,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderRadius: 8,
   },
+  blueDot: {
+    height: 20,
+    width: 20,
+  },
   buttonOverlay: {
     fontSize: 12,
     width: 150,
@@ -110,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   TouchableOpacity: {
-    backgroundColor: 'transparent',
+    backgroundColor: 'red',
   },
   TouchableOpacityText: {
     color: 'blue',

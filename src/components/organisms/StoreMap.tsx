@@ -61,7 +61,12 @@ const StoreFinder: React.FC = () => {
       <View style={styles.mapContainer}>
         <MapView
           ref={mapRef}
-          showsUserLocation
+          showsUserLocation={false}
+          showsMyLocationButton={false}
+          showsCompass={false}
+          toolbarEnabled={false}
+          zoomControlEnabled={false}
+          rotateEnabled={false}
           onRegionChangeComplete={setRegion}
           provider={PROVIDER_GOOGLE}
           style={styles.map}
@@ -72,6 +77,16 @@ const StoreFinder: React.FC = () => {
             longitudeDelta: 0.3, // ^^
           }}
         >
+          {location && (
+            <Marker coordinate={location} anchor={{ x: 0.5, y: 0.5 }}>
+              <Image
+                source={require('../../../icons/blueDot.png')}
+                style={styles.blueDot}
+                resizeMode="contain"
+              />
+            </Marker>
+          )}
+
           {region && (
             <Clusterer
               data={markers}
@@ -118,6 +133,9 @@ const StoreFinder: React.FC = () => {
                           offers: 'Earn 5% back in rewards!',
                           lat: place.geometry.location.lat,
                           lng: place.geometry.location.lng,
+                          vicinity:
+                            place.vicinity ??
+                            `${place.geometry.location.lat},${place.geometry.location.lng}`,
                         }}
                       />
                     </Marker>
