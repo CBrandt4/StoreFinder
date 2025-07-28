@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unstable-nested-components */
 import styles from '../AppStyles';
 import { getDistance, convertDistance } from 'geolib';
 import {
@@ -11,16 +10,11 @@ import {
 } from 'react-native';
 import { useLocation } from '../../context/LocationContext';
 import { useStore } from '../../context/StoreContext';
+import { ListHeader } from '../molecules/ListHeader';
 
 const PlacesList = () => {
   const { places } = useStore();
   const location = useLocation();
-
-  const ListHeader = () => (
-    <View style={styles.header}>
-      <Text style={styles.headerText}>Stores Nearby</Text>
-    </View>
-  );
 
   if (!places || places.length === 0) {
     return (

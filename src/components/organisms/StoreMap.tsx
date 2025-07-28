@@ -40,8 +40,7 @@ const StoreFinder: React.FC = () => {
   }));
 
   return (
-    // eslint-disable-next-line react-native/no-inline-styles
-    <View style={{ flex: 1 }}>
+    <View style={styles.map}>
       <SearchBar
         onLocationFound={({ latitude, longitude }) => {
           const newRegion = {
