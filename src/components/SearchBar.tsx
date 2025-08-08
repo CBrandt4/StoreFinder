@@ -17,6 +17,7 @@ const SearchBar: React.FC<Props> = ({ onLocationFound }) => {
       )}&key=${API_KEY}`;
 
       console.log(url);
+      console.log(API_KEY);
 
       const res = await fetch(url);
       const json = await res.json();

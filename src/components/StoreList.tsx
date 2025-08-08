@@ -1,4 +1,4 @@
-import styles from '../AppStyles';
+import styles from './AppStyles';
 import { getDistance, convertDistance } from 'geolib';
 import {
   View,
@@ -8,9 +8,9 @@ import {
   Linking,
   Image,
 } from 'react-native';
-import { useLocation } from '../../context/LocationContext';
-import { useStore } from '../../context/StoreContext';
-import { ListHeader } from '../molecules/ListHeader';
+import { useLocation } from '../context/LocationContext';
+import { useStore } from '../context/StoreContext';
+import { ListHeader } from './ListHeader';
 
 const PlacesList = () => {
   const { places } = useStore();

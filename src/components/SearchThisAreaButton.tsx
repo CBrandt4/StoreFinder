@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
-import styles from '../AppStyles';
-import { useStore } from '../../context/StoreContext';
+import styles from './AppStyles';
+import { useStore } from '../context/StoreContext';
 
 const SearchThisAreaButton: React.FC = () => {
   const { fetchStores, region } = useStore();

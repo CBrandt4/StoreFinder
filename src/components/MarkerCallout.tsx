@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Linking } from 'react-native';
 import { Callout } from 'react-native-maps';
-import styles from '../AppStyles';
+import styles from './AppStyles';
 
 interface MarkerCalloutProps {
   loc: {

@@ -86,6 +86,8 @@ const styles = StyleSheet.create({
   },
   map: {
     flex: 1,
+    height: 'auto',
+    width: 'auto',
   },
   center: {
     backgroundColor: 'transparent',
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   TouchableOpacity: {
-    backgroundColor: 'red',
+    backgroundColor: 'transparent',
   },
   TouchableOpacityText: {
     color: 'blue',
@@ -178,7 +180,36 @@ const styles = StyleSheet.create({
     height: 24,
   },
   navBar: {
-    backgroundColor: '#fff',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 40,
+    height: 90,
+    paddingHorizontal: 20,
+    backgroundColor: '#fff', // or your app color
+  },
+  leftHeader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+  },
+  centerHeader: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  rightHeader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  backArrow: {
+    width: 24,
+    height: 24,
+  },
+  questionButton: {
+    width: 24,
+    height: 24,
+    color: 'blue',
   },
 });
 
