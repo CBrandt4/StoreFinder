@@ -94,12 +94,12 @@ Right now iOS and Android will load google maps. remove "PROVIDER_GOOGLE" to loa
 
 Right now, each api call is about $0.02. So, if a customer hits "Search this area" repeatedly, or many customer are using the app with your api key, it will be quite expensive.
 
-We could fetch the store locations from a database. This would make each fetch free, but would require maintenance to keep an updated list of stores, espcecially with stores possibly opening and closing permanently.
+We could fetch the store locations from a database. This would make each fetch free, but would require maintenance to keep an updated list of stores, especially with stores possibly opening and closing permanently.
 This would be a fixed cost model, where api costs don't scale with customer traffic.
 
 # Future features
 
-0. When "Get Directions" button is tapped, customer has options between Waze, Apple Maps, Google Maps.
+0. When "Get Directions" button is tapped, the customer has options between Waze, Apple Maps, Google Maps.
 
 1. User has option between "Get Directions" or "Shop Online"
 
@@ -117,5 +117,5 @@ This would be a fixed cost model, where api costs don't scale with customer traf
    UI is designed in Figma with these components in mind, but developed with custom versions.
 
 4. Clustering: To avoid overlap, the store pins cluster together with a number like "+2" or more.
-   Because stores within the GAP family are often next door or connected, sometimes it requires
-   excessize zooming in to disconnect clusters. One fix is to implement expandable clusters when tapped.
+   Because stores can be next door or connected, sometimes it requires
+   excessive zooming in to disconnect clusters. One fix is to implement expandable clusters when tapped.
