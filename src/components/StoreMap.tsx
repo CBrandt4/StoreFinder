@@ -1,15 +1,15 @@
 import React, { useRef } from 'react';
-import { useLocation } from '../../context/LocationContext.tsx';
+import { useLocation } from '../context/LocationContext.tsx';
 import { View, Text, Image, Dimensions } from 'react-native';
 import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
-import { useStore } from '../../context/StoreContext.tsx';
-import MarkerCallout from '../molecules/MarkerCallout.tsx';
-import styles from '../AppStyles.tsx';
+import { useStore } from '../context/StoreContext.tsx';
+import MarkerCallout from './MarkerCallout.tsx';
+import styles from './AppStyles.tsx';
 import { Clusterer } from 'react-native-clusterer';
-import { assignIcon } from '../../utils/assignIcon.ts';
-import SearchBar from '../molecules/SearchBar.tsx';
-import LoadingOverlay from '../molecules/LoadingOverlay.tsx';
-import SearchThisAreaButton from '../molecules/SearchThisAreaButton.tsx';
+import { assignIcon } from '../utils/assignIcon.ts';
+import SearchBar from './SearchBar.tsx';
+import LoadingOverlay from './LoadingOverlay.tsx';
+import SearchThisAreaButton from './SearchThisAreaButton.tsx';
 
 const DEFAULT_OPTIONS = {
   radius: 4,
@@ -80,7 +80,7 @@ const StoreFinder: React.FC = () => {
           {location && (
             <Marker coordinate={location} anchor={{ x: 0.5, y: 0.5 }}>
               <Image
-                source={require('../../../icons/blueDot.png')}
+                source={require('../../icons/blueDot.png')}
                 style={styles.blueDot}
                 resizeMode="contain"
               />

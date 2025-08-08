@@ -1,11 +1,11 @@
 import React from 'react';
-import StoreFinder from './src/components/organisms/StoreMap.tsx';
-import PlacesList from './src/components/organisms/StoreList.tsx';
+import StoreFinder from './src/components/StoreMap.tsx';
+import PlacesList from './src/components/StoreList.tsx';
 import { View, StyleSheet, Dimensions, SafeAreaView } from 'react-native';
 import { LocationProvider } from './src/context/LocationContext';
 import { StoreProvider } from './src/context/StoreContext';
-import Spacer from './src/components/molecules/Spacer.tsx';
-import AppHeader from './src/components/molecules/AppHeader.tsx';
+import Spacer from './src/components/Spacer.tsx';
+import AppHeader from './src/components/AppHeader.tsx';
 
 const { height } = Dimensions.get('window');
 
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: 8,
     overflow: 'hidden',
-    marginTop: 100,
+    marginTop: 16,
     backgroundColor: 'transparent',
   },
 });

@@ -1,5 +1,5 @@
 import { Text, View } from 'react-native';
-import styles from '../AppStyles';
+import styles from './AppStyles';
 
 export const ListHeader = () => (
   <View style={styles.header}>
